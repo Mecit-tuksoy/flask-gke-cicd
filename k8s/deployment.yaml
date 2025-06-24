@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: us-central1-docker.pkg.dev/new-app-463912/flask-app-repo/flask-app:b938a7171682c11e4b7515fdb77408e65ad6b348
+          image: us-central1-docker.pkg.dev/new-app-463912/flask-app-repo/flask-app:1bb8fcabc163a2b67f38a530a518f8c4e8b9ab17
           ports:
             - containerPort: 5000
           resources:
