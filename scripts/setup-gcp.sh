@@ -68,6 +68,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_EMAIL" \
+    --role="roles/artifactregistry.writer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:$SERVICE_ACCOUNT_EMAIL" \
     --role="roles/container.clusterAdmin"
 
 # 7. Service Account key oluştur
