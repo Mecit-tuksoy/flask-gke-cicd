@@ -30,7 +30,7 @@ Bu rehber, Flask uygulamanızı Google Kubernetes Engine (GKE) üzerinde GitHub 
 
 ## ☁️ Google Cloud Platform Kurulumu
 
-### 1. Proje Oluşturma ve Temel Ayarlar
+### 1. Proje Oluşturma ve Temel Ayarlar:
 
 ```bash
 # gcloud CLI ile giriş yapın
@@ -41,7 +41,7 @@ export PROJECT_ID=\"your-unique-project-id\"
 gcloud projects create $PROJECT_ID
 gcloud config set project $PROJECT_ID
 
-# Billing hesabını projeye bağlayın (GCP Console'dan yapılmalı)
+# Billing hesabını projeye bağlayın (GCP Console'dan yapılmalı.)
 ```
 
 ### 2. Otomatik Kurulum Scripti Çalıştırma
