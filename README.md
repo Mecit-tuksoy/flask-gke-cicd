@@ -12,7 +12,7 @@ Bu rehber, Flask uygulamanızı Google Kubernetes Engine (GKE) üzerinde GitHub 
 8. [Troubleshooting](#troubleshooting)
 9. [Best Practices](#best-practices)
 
-## 🚀 Ön Hazırlıklar
+## 🚀 Ön Hazırlıklar.
 
 ### Gerekli Araçlar
 
