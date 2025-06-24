@@ -74,6 +74,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_EMAIL" \
     --role="roles/container.clusterAdmin"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:$SERVICE_ACCOUNT_EMAIL" \
+    --role="roles/artifactregistry.admin"
+
 # 7. Service Account key oluştur
 echo "🗝️  Service Account key oluşturuluyor..."
 gcloud iam service-accounts keys create ./gke-key.json \
