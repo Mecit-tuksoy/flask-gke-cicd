@@ -10,7 +10,7 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: flask-gke-cluster
   REPOSITORY: flask-app-repo
-  REPO_LOCATION: us-central1
+  REPO_LOCATION: us-central1-a
   IMAGE: flask-app
 
 jobs:
