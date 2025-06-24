@@ -63,9 +63,10 @@ jobs:
           docker push "$REPO_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
 
       - name: Update deployment image
-        run: |-
-          sed -i "s/PROJECT_ID/$PROJECT_ID/g" k8s/deployment.yaml
-          sed -i "s/:latest/:$GITHUB_SHA/g" k8s/deployment.yaml
+        run: |
+          IMAGE_HOST="$REPO_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE"
+          # Her hangi bir eski tag ne olursa olsun (latest veya SHA), yeni SHA ile değiştirir
+          sed -i -E "s#(${IMAGE_HOST}:)[^[:space:]]+#\1${GITHUB_SHA}#g" k8s/deployment.yaml
 
       - name: Commit and push updated manifests
         run: |
