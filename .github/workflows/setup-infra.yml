@@ -5,7 +5,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: flask-gke-cluster
-  REPO_LOCATION: us-central1
+  REPO_LOCATION: us-central1-a
 
 jobs:
   setup-infra:
