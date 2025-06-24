@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return "Hello from Flask on Docker Compose, v1.0"
+    return "Hello from Flask on GKE, v2.0"
 
 @app.route('/health')
 def health_check():
