@@ -51,7 +51,7 @@ jobs:
       - name: Get the GKE credentials so we can deploy to the cluster
         run: |-
           gcloud container clusters get-credentials "$GKE_CLUSTER" \
-            --region "$REPO_LOCATION" \
+            --zone us-central1-a \
             --project "$PROJECT_ID"
 
       - name: Build the Docker image
