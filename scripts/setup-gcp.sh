@@ -79,26 +79,6 @@ gcloud iam service-accounts keys create ./gke-key.json \
 echo "🌐 Static IP oluşturuluyor..."
 gcloud compute addresses create flask-app-ip --global
 
-# 9. ArgoCD'yi kur
-echo "🎯 ArgoCD kurulumu başlıyor..."
-kubectl create namespace argocd || true
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-# ArgoCD CLI kurulum talimatları
-echo "📥 ArgoCD CLI'ı kurmak için:"
-echo "Linux/WSL:"
-echo "curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64"
-echo "sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd"
-echo ""
-echo "macOS:"
-echo "brew install argocd"
-
-# 10. ArgoCD admin şifresini al
-echo "⏳ ArgoCD'nin hazır olması bekleniyor..."
-kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n argocd
-
-echo "🔑 ArgoCD admin şifresi alınıyor..."
-ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 echo ""
 echo "✅ Kurulum tamamlandı!"
@@ -114,15 +94,6 @@ echo ""
 echo "🔐 GitHub Secrets'a eklenecek değerler:"
 echo "GCP_PROJECT_ID: $PROJECT_ID"
 echo "GCP_SA_KEY: $(cat ./gke-key.json | base64 -w 0)"
-echo ""
-echo "🎯 ArgoCD Bilgileri:"
-echo "Namespace: argocd"
-echo "Admin Username: admin"
-echo "Admin Password: $ARGOCD_PASSWORD"
-echo ""
-echo "🌐 ArgoCD'ye erişim için port-forward:"
-echo "kubectl port-forward svc/argocd-server -n argocd 8080:443"
-echo "Ardından https://localhost:8080 adresine gidin"
 echo ""
 echo "📝 Sonraki adımlar:"
 echo "1. GitHub repository'nizde Secrets'ları ayarlayın"
