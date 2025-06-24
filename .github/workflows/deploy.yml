@@ -10,6 +10,8 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: flask-gke-cluster
   GKE_ZONE: us-central1-a
+  REPOSITORY: flask-app-repo
+  REPO_LOCATION: us-central1
   DEPLOYMENT_NAME: flask-app
   IMAGE: flask-app
 
@@ -51,11 +53,11 @@ jobs:
 
       - name: Build the Docker image
         run: |-
-          docker build --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" .
+          docker build --tag "${REPO_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/$IMAGE:$GITHUB_SHA" .
 
       - name: Push the Docker image to Google Container Registry
         run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+          docker push "${REPO_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/$IMAGE:$GITHUB_SHA"
 
       - name: Update deployment image
         run: |-
