@@ -16,29 +16,29 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: flask-app
-        image: gcr.io/PROJECT_ID/flask-app:latest
-        ports:
-        - containerPort: 5000
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
-            memory: "128Mi"
-            cpu: "200m"
-        env:
-        - name: PORT
-          value: "5000"
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: flask-app
+          image: us-central1-docker.pkg.dev/PROJECT_ID/flask-app-repo/flask-app:latest
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+          env:
+            - name: PORT
+              value: "5000"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
