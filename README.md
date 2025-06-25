@@ -68,10 +68,7 @@ export SERVICE_ACCOUNT_NAME=\"gke-github-actions\"
 
 # Gerekli API'ları etkinleştir
 gcloud services enable container.googleapis.com
-gcloud services enable compute.googleapis.com
-gcloud services enable containerregistry.googleapis.com
-gcloud services enable cloudbuild.googleapis.com
-gcloud services enable iam.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
 
 # GKE Cluster oluştur
 gcloud container clusters create $CLUSTER_NAME \\
@@ -92,24 +89,24 @@ gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME \\
     --display-name=\"GKE GitHub Actions\"
 
 # Gerekli rolleri ata
-gcloud projects add-iam-policy-binding $PROJECT_ID \\
-    --member=\"serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com\" \\
-    --role=\"roles/container.developer\"
+# Container (GKE) için gerekli yetki
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/container.developer"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \\
-    --member=\"serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com\" \\
-    --role=\"roles/storage.admin\"
+# Artifact Registry için image push çekme yetkisi
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/artifactregistry.writer"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \\
-    --member=\"serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com\" \\
-    --role=\"roles/container.clusterAdmin\"
+# Eğer bu servis hesabı bir işlem için başka servis hesaplarını kullanacaksa
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/iam.serviceAccountUser"
 
 # Service Account key oluştur
 gcloud iam service-accounts keys create ./gke-key.json \\
     --iam-account=\"${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com\"
-
-# Static IP oluştur (Ingress için)
-gcloud compute addresses create flask-app-ip --global
 
 # Cluster credentials al
 gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE
@@ -141,16 +138,6 @@ git push -u origin main
 spec:
   source:
     repoURL: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-```
-
-#### Ingress Konfigürasyonu (Domain kullanıyorsanız)
-
-`k8s/ingress.yaml` dosyasını güncelleyin:
-
-```yaml
-spec:
-  rules:
-    - host: your-actual-domain.com
 ```
 
 ## 🔐 GitHub Secrets Konfigürasyonu
@@ -300,15 +287,6 @@ kubectl get endpoints flask-app-service
 kubectl get ingress flask-app-ingress
 ```
 
-### Grafana ve Prometheus (Opsiyonel)
-
-Monitoring klasöründeki konfigürasyonları kullanabilirsiniz:
-
-```bash
-kubectl apply -f monitoring/prometheus.yaml
-kubectl apply -f monitoring/grafana.yaml
-```
-
 ## 🔧 Troubleshooting
 
 ### Yaygın Sorunlar ve Çözümleri
@@ -356,7 +334,7 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 gcloud auth configure-docker
 
 # Image var mı kontrol
-gcloud container images list --repository=gcr.io/$PROJECT_ID
+gcloud container images list
 ```
 
 #### 5. Service Erişim Sorunları
